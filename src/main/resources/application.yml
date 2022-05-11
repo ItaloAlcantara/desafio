@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: Desafio-api
+  server:
+    port: 8080
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/desafio
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      show-sql: true

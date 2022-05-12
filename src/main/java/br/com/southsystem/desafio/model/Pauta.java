@@ -5,7 +5,6 @@ import br.com.southsystem.desafio.model.enumerador.Status;
 import br.com.southsystem.desafio.model.enumerador.Voto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.type.LocalDateTimeType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,14 +25,9 @@ public class Pauta extends BaseEntity {
     private String titulo;
     private String descricao;
 
-    @ManyToMany
-    @JoinTable(
-            name = "pauta_associado",
-            joinColumns = @JoinColumn(name = "associado_id"),
-            inverseJoinColumns = @JoinColumn(name = "pauta_id")
-    )
+    @OneToMany(mappedBy = "pauta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<Associado> associados = new ArrayList<>();
+    private List<PautaAssociado> pautaAssociados = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -45,7 +39,7 @@ public class Pauta extends BaseEntity {
         if (LocalDateTime.now().isAfter(this.getExpiracao())) {
             VotacaoDto votacaoDto = new VotacaoDto();
 
-            associados.forEach(associado -> {
+            pautaAssociados.forEach(associado -> {
                 if(associado.getVoto().equals(Voto.SIM)){
                     votacaoDto.addVotoAFavor();
                 }else{

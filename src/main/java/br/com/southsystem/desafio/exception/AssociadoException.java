@@ -5,7 +5,7 @@ public class AssociadoException extends RuntimeException{
     public AssociadoException(final String message){super(message);}
 
     public static AssociadoException  cpfAssociadoNaoEstaValido() {
-        throw new AssociadoException("O cpf do associado não está mais valido.");
+        throw new AssociadoException("O cpf do associado não está valido.");
     }
 
 }

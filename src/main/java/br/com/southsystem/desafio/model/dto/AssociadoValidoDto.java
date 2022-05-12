@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AssociadoValido {
+public class AssociadoValidoDto {
 
-    private String valido;
+    private String status;
 }

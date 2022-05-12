@@ -1,8 +1,11 @@
 package br.com.southsystem.desafio.model;
 
+import br.com.southsystem.desafio.model.dto.VotacaoDto;
 import br.com.southsystem.desafio.model.enumerador.Status;
 import br.com.southsystem.desafio.model.enumerador.Voto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.type.LocalDateTimeType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,19 +32,30 @@ public class Pauta extends BaseEntity {
             joinColumns = @JoinColumn(name = "associado_id"),
             inverseJoinColumns = @JoinColumn(name = "pauta_id")
     )
+    @JsonManagedReference
     private List<Associado> associados = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.ATIVA;
+    private Status status;
 
-    private LocalDateTime expiracao = LocalDateTime.now().plusMinutes(1);
+    private LocalDateTime expiracao ;
 
-    private void pautaFechada() {
-        if (this.getExpiracao().isEqual(LocalDateTime.now())) {
-            Long aprovada = associados.stream().filter(associado -> associado.getVoto().equals(Voto.SIM)).count();
-            Long reprovada = associados.stream().filter(associado -> associado.getVoto().equals(Voto.NAO)).count();
-            this.setStatus(aprovada.compareTo(reprovada) > 0 ? Status.APROVADA : Status.REPROVADA);
+
+    public Pauta pautaFechada() {
+        if (LocalDateTime.now().isAfter(this.getExpiracao())) {
+            VotacaoDto votacaoDto = new VotacaoDto();
+
+            associados.forEach(associado -> {
+                if(associado.getVoto().equals(Voto.SIM)){
+                    votacaoDto.addVotoAFavor();
+                }else{
+                    votacaoDto.addVotoContra();
+                }
+            });
+            this.setStatus(votacaoDto.getVotosAFavor() > votacaoDto.getVotosContra() ? Status.APROVADA : Status.REPROVADA);
+            return this;
         }
-    }
+        return this;}
+
 
 }

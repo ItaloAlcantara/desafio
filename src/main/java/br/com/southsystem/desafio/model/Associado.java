@@ -1,6 +1,7 @@
 package br.com.southsystem.desafio.model;
 
 import br.com.southsystem.desafio.model.enumerador.Voto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Associado extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Voto voto;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "associados")
     private List<Pauta> pautaList;
 

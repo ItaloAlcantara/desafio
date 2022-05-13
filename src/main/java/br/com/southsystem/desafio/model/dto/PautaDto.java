@@ -3,6 +3,7 @@ package br.com.southsystem.desafio.model.dto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class PautaDto {
+public class PautaDto implements Serializable {
 
     @NotNull
     private String titulo;

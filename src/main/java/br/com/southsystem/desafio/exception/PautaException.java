@@ -23,4 +23,8 @@ public class PautaException extends RuntimeException{
         throw new PautaException("Pauta em questão ou não foi finalizada ou não possui votos.");
     }
 
+    public static PautaException  pautaInvalida() {
+        throw new PautaException("Pauta em questão é invalida pois data de expiracao menor que data e hora atual.");
+    }
+
 }

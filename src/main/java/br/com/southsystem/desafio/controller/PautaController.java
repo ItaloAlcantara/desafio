@@ -1,6 +1,5 @@
 package br.com.southsystem.desafio.controller;
 
-import br.com.southsystem.desafio.model.Associado;
 import br.com.southsystem.desafio.model.Pauta;
 import br.com.southsystem.desafio.model.dto.AssociadoDto;
 import br.com.southsystem.desafio.model.dto.PautaDto;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pauta")
+@RequestMapping("/api")
 public class PautaController {
 
     @Autowired

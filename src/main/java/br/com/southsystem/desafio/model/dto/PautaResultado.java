@@ -1,15 +1,16 @@
 package br.com.southsystem.desafio.model.dto;
 
 import br.com.southsystem.desafio.model.enumerador.Status;
-import br.com.southsystem.desafio.model.enumerador.Voto;
 import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PautaResultado {
+public class PautaResultado implements Serializable {
 
     private Long votosPositivos;
     private Long votosNegativos;

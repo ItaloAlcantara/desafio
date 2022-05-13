@@ -39,14 +39,16 @@ public class Pauta extends BaseEntity {
         if (LocalDateTime.now().isAfter(this.getExpiracao())) {
             VotacaoDto votacaoDto = new VotacaoDto();
 
-            pautaAssociados.forEach(associado -> {
-                if(associado.getVoto().equals(Voto.SIM)){
-                    votacaoDto.addVotoAFavor();
-                }else{
-                    votacaoDto.addVotoContra();
-                }
-            });
-            this.setStatus(votacaoDto.getVotosAFavor() > votacaoDto.getVotosContra() ? Status.APROVADA : Status.REPROVADA);
+            if(pautaAssociados != null){
+                pautaAssociados.forEach(associado -> {
+                    if(associado.getVoto().equals(Voto.SIM)){
+                        votacaoDto.addVotoAFavor();
+                    }else{
+                        votacaoDto.addVotoContra();
+                    }
+                });
+                this.setStatus(votacaoDto.getVotosAFavor() > votacaoDto.getVotosContra() ? Status.APROVADA : Status.REPROVADA);
+            }
             return this;
         }
         return this;}

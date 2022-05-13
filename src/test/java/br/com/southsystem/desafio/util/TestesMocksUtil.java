@@ -2,12 +2,14 @@ package br.com.southsystem.desafio.util;
 
 import br.com.southsystem.desafio.model.Associado;
 import br.com.southsystem.desafio.model.Pauta;
+import br.com.southsystem.desafio.model.PautaAssociado;
+import br.com.southsystem.desafio.model.dto.AssociadoDto;
+import br.com.southsystem.desafio.model.enumerador.Status;
 import br.com.southsystem.desafio.model.enumerador.Voto;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.List;
 
 public class TestesMocksUtil {
 
@@ -21,16 +23,42 @@ public class TestesMocksUtil {
                 .build();
     }
 
-    public static Pauta getPautaCadastradaComAssociado(){
+    public static Pauta getPautaCadastradaExpiracaoMenorQueDataAtual(){
         return Pauta.builder()
                 .titulo("Teste a favor")
                 .descricao("votos validos")
-                .expiracao(LocalDateTime.now().plusHours(1))
+                .expiracao(LocalDateTime.now().minus(5,ChronoUnit.MINUTES))
+                .build();
+    }
+
+    public static Pauta getPautaCadastradaJaComStatus(){
+        return Pauta.builder()
+                .titulo("Teste a favor")
+                .descricao("votos validos")
+                .expiracao(LocalDateTime.now())
+                .status(Status.APROVADA)
                 .build();
     }
 
     public static Pauta getPautaValidaComVotosAFavor(){
         return Pauta.builder()
+                .titulo("Teste a favor")
+                .descricao("votos validos")
+                .expiracao(LocalDateTime.now().minus(1L, ChronoUnit.MINUTES))
+                .build();
+    }
+
+    public static PautaAssociado getPautaAssociadoVotandoAFavor(){
+        return PautaAssociado.builder()
+                .pauta(getPautaValidaComVotosAFavor())
+                .associado(getAssociadoValido())
+                .voto(Voto.SIM)
+                .build();
+    }
+
+    public static Pauta getPautaComAssociados(){
+        return Pauta.builder()
+                .pautaAssociados(Collections.singletonList(getPautaAssociadoVotandoAFavor()))
                 .titulo("Teste a favor")
                 .descricao("votos validos")
                 .expiracao(LocalDateTime.now().minus(1L, ChronoUnit.MINUTES))
@@ -53,15 +81,15 @@ public class TestesMocksUtil {
                 .build();
     }
 
-    public static Associado getAssociadoVotandoAFavor(){
+    public static Associado getAssociadoValido(){
         return Associado.builder()
                 .cpf("06613868302")
                 .build();
     }
 
-    public static Associado getAssociadoVotandoContra(){
-        return Associado.builder()
-                .cpf("06613868302")
-                .build();
+    public static AssociadoDto getAssociadoDto(){
+        return AssociadoDto.builder()
+                .cpf("06612368302")
+                .voto(Voto.SIM).build();
     }
 }

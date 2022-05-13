@@ -49,12 +49,19 @@ public class PautaService {
 
     public ResponseEntity<PautaDto> cadastrar(PautaDto pauta) {
         LOGGER.info("Acessando o banco de dados para salvar uma nova pauta");
-        if(pauta.getExpiracao() == null){
-            pauta.setExpiracao(LocalDateTime.now().plusMinutes(1));
-        }
+        validaExpiracao(pauta);
         repository.save(Util.mapearDtotoEntityPauta(pauta));
         LOGGER.info("Pauta salva");
         return ResponseEntity.ok().body(pauta);
+    }
+
+    private void validaExpiracao(PautaDto pauta) {
+        if(pauta.getExpiracao() != null && LocalDateTime.now().isAfter(pauta.getExpiracao())){
+            throw PautaException.pautaInvalida();
+        }
+        if(pauta.getExpiracao() == null){
+            pauta.setExpiracao(LocalDateTime.now().plusMinutes(1));
+        }
     }
 
 
@@ -104,10 +111,6 @@ public class PautaService {
         return LocalDateTime.now().isAfter(pauta.getExpiracao()) && pauta.getPautaAssociados().size() >0;
     }
 
-
-
-
-
     public Pauta pautaExiste(Long id){
         LOGGER.info("Acessando o banco de dados para verificar se exista a pauta de id={}",id);
         if (repository.findById(id).isPresent() ){
@@ -150,7 +153,7 @@ public class PautaService {
     private boolean associadoDuplicadoParaPauta(Long pautaId,String cpf) {
         Associado associado;
         if(associadoRepository.findByCpf(cpf).isEmpty())
-            return true;
+            return false;
         associado = associadoRepository.findByCpf(cpf).get();
         return pautaAssociadoRepository.findByPauta_IdAndAssociado_Id(pautaId, associado.getId()).isPresent();
     }

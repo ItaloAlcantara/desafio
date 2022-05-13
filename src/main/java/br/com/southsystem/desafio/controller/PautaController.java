@@ -4,6 +4,7 @@ import br.com.southsystem.desafio.model.Pauta;
 import br.com.southsystem.desafio.model.dto.AssociadoDto;
 import br.com.southsystem.desafio.model.dto.PautaDto;
 import br.com.southsystem.desafio.service.PautaService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
+@Api(value = "Usuario")
 @RestController
 @RequestMapping("/api")
 public class PautaController {
